@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+
     ];
 
     /**
@@ -44,5 +45,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function address(){
+        return $this->hasOne(Address::class);
+    }
+
+    public function events(){
+        return $this->belongsToMany(Event::class)->withPivot('note')->withTimestamps();
     }
 }
