@@ -38,9 +38,7 @@ class AddressController extends Controller
             return response()->json(['message' => 'User not found', 'data' => null], 404);
         }
 
-        if ($user->address){
-            return response()->json(['message' => 'User already has an address', 'data' => null], 400);
-        }
+
 
         /*
          * $addres = new Address($addressValidator->validate());
