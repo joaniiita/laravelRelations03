@@ -15,15 +15,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $events = Event::all();
+        return response()->json(['message'=>null,'data'=>$events],200);
     }
 
     /**
@@ -34,7 +27,7 @@ class EventController extends Controller
         $validator = Validator::make($request->all(),[
             'event_name'=>'required|string|max:255',
             'event_detail'=>'required|string|max:255',
-
+            'event_type_id'=>'required|numeric'
         ]);
 
         if ($validator->fails()){
@@ -60,22 +53,36 @@ class EventController extends Controller
             return response()->json(['message'=>'Error','data'=>$e->getMessage()],400);
         }
         return response()->json(['message'=>'Event Created','data'=>$event],200);
+
+        /*
+         * $validator = Validator::make($request->all(), [
+         *  'event_name'=>'required|string|max:255',
+         *  'event_detail'=>'required|string|max:255',
+         *  'event_type_id'=>'required|numeric|exists:event_types,id'
+         * ]);
+         *
+         * if ($validator->fails()){
+         *      return response()->json($validator->messages(),400);
+         * }
+         *
+         * $event = Event::create($validator->validate());
+         * return response()->json(['message'=>'Event Created','data'=>$event],200);
+       */
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
-    }
+        $event = Event::find($id);
+        //$event = Event::findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        if (!$event){
+            return response()->json(['message'=>'Event not found','data'=>null],404);
+        }
+
+        return response()->json(['message'=>null,'data'=>$event],200);
     }
 
     /**

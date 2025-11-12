@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Validator;
 
 class AddressController extends Controller
 {
+    public function index(){
+        $addresses = Address::all();
+        return response()->json(['message'=>null,'data'=>$addresses],200);
+    }
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
